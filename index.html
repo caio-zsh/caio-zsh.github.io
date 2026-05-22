@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>caio-zsh</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0d0d0f;
+      --surface: #13131a;
+      --border: #1e1e2a;
+      --purple: #8b5cf6;
+      --yellow: #fbbf24;
+      --orange: #f97316;
+      --text: #e8e8f0;
+      --muted: #6b6b80;
+      --mono: 'Share Tech Mono', monospace;
+      --sans: 'Syne', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(139,92,246,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139,92,246,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── CONTAINER ÚNICO ── */
+    /* Tudo passa por aqui. Padding lateral fixo em px para garantir respiro. */
+    .wrap {
+      width: 100%;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    section { position: relative; z-index: 1; }
+    .section-pad { padding-top: 5rem; padding-bottom: 5rem; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(13,13,15,0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+    .nav-logo { font-family: var(--mono); font-size: 1.12rem; color: var(--purple); letter-spacing: 0.05em; }
+    .nav-logo span { color: var(--yellow); }
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
+    .nav-links a {
+      font-family: var(--mono); font-size: 0.896rem; color: var(--muted);
+      text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--yellow); }
+
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--muted); transition: background 0.2s; }
+    .hamburger:hover span { background: var(--yellow); }
+
+    .mobile-menu {
+      display: none; position: fixed; inset: 0;
+      background: var(--bg); z-index: 99;
+      flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-family: var(--mono); font-size: 1.456rem; color: var(--text);
+      text-decoration: none; letter-spacing: 0.15em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .mobile-menu a:hover { color: var(--purple); }
+    .mobile-menu-close {
+      position: absolute; top: 1.2rem; right: 24px;
+      background: none; border: none; color: var(--muted);
+      font-family: var(--mono); font-size: 1.568rem; cursor: pointer;
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 5rem;
+    }
+    .hero-content { padding-top: 2rem; padding-bottom: 2rem; }
+
+    .hero-tag {
+      font-family: var(--mono); font-size: 0.952rem; color: var(--orange);
+      letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.4rem;
+    }
+    .hero-name {
+      font-size: clamp(3.136rem, 11.2vw, 6.72rem);
+      font-weight: 800; line-height: 1; letter-spacing: -0.03em;
+    }
+    .hero-name .accent { color: var(--purple); }
+    .hero-sub {
+      font-family: var(--mono);
+      font-size: clamp(1.008rem, 2.8vw, 1.12rem);
+      color: var(--muted); margin-top: 1.5rem;
+      line-height: 1.85; max-width: 480px;
+    }
+    .hero-sub .hl { color: var(--yellow); }
+    .hero-cta { margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    /* ── BUTTONS ── */
+    .btn {
+      font-family: var(--mono); font-size: 0.952rem; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 0.75rem 1.6rem;
+      text-decoration: none; border: 1px solid;
+      transition: background 0.2s, color 0.2s; cursor: pointer; display: inline-block;
+    }
+    .btn-primary { background: var(--purple); border-color: var(--purple); color: #fff; }
+    .btn-primary:hover { background: transparent; color: var(--purple); }
+    .btn-ghost { background: transparent; border-color: var(--border); color: var(--muted); }
+    .btn-ghost:hover { border-color: var(--orange); color: var(--orange); }
+
+    /* ── LABELS & TITLES ── */
+    .section-label {
+      font-family: var(--mono); font-size: 0.896rem; color: var(--purple);
+      letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-size: clamp(1.792rem, 4.48vw, 2.24rem);
+      font-weight: 800; line-height: 1.15; margin-bottom: 1.5rem;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    .about-img-wrap { position: relative; }
+    .about-img-wrap img {
+      width: 200px; height: 240px;
+      object-fit: cover; object-position: center top;
+      display: block;
+      filter: grayscale(15%) contrast(1.05);
+      border: 1px solid var(--border);
+    }
+    .about-img-wrap::before {
+      content: ''; position: absolute;
+      top: -7px; left: -7px;
+      width: 200px; height: 240px;
+      border: 1px solid var(--purple); z-index: -1;
+    }
+    .about-img-wrap::after {
+      content: ''; position: absolute;
+      bottom: -7px; right: -7px;
+      width: 100px; height: 120px;
+      border: 1px solid var(--orange); z-index: -1;
+    }
+    .about-text {
+      font-family: var(--mono); font-size: 1.064rem;
+      color: var(--muted); line-height: 1.9;
+    }
+    .about-text + .about-text { margin-top: 0.85rem; }
+
+    /* ── INTERESTS ── */
+    .interests-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--border);
+      margin-top: 0.5rem;
+    }
+    .interest-card {
+      background: var(--surface);
+      padding: 2rem 1.5rem;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s;
+    }
+    .interest-card:hover { border-color: var(--purple); }
+    .interest-icon { 1.568rem; margin-bottom: 1rem; }
+    .interest-title { 1.176rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .interest-desc {
+      font-family: var(--mono); font-size: 0.986rem;
+      color: var(--muted); line-height: 1.75;
+    }
+    .tag {
+      display: inline-block; margin-top: 1rem;
+      font-family: var(--mono); font-size: 0.806rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      padding: 0.2rem 0.55rem; border: 1px solid;
+    }
+    .tag-purple { color: var(--purple); border-color: var(--purple); }
+    .tag-yellow { color: var(--yellow); border-color: var(--yellow); }
+    .tag-orange { color: var(--orange); border-color: var(--orange); }
+
+    /* ── SERVICES ── */
+    .services-list { margin-top: 0.5rem; }
+    .service-item {
+      display: flex; justify-content: space-between;
+      align-items: center; padding: 1.75rem 0;
+      border-bottom: 1px solid var(--border); gap: 1.5rem;
+    }
+    .service-item:first-child { border-top: 1px solid var(--border); }
+    .service-num { font-family: var(--mono); font-size: 0.806rem; color: var(--purple); min-width: 2rem; }
+    .service-content { flex: 1; }
+    .service-title { 1.232rem; font-weight: 700; margin-bottom: 0.35rem; }
+    .service-desc { font-family: var(--mono); font-size: 0.986rem; color: var(--muted); line-height: 1.75; }
+    .service-badge {
+      font-family: var(--mono); font-size: 0.806rem; color: var(--orange);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      border: 1px solid var(--orange); padding: 0.25rem 0.6rem; white-space: nowrap;
+    }
+
+    /* ── CONTACT ── */
+    .contact-box {
+      margin-top: 1rem; border: 1px solid var(--border);
+      padding: 2.5rem; background: var(--surface);
+    }
+    .contact-email {
+      font-size: clamp(1.232rem, 3.36vw, 1.512rem); font-weight: 800;
+      color: var(--yellow); word-break: break-all; margin-bottom: 1.75rem;
+    }
+    .contact-links { display: flex; gap: 0.85rem; flex-wrap: wrap; }
+
+    /* ── FOOTER ── */
+    footer { position: relative; z-index: 1; border-top: 1px solid var(--border); }
+    .footer-inner {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 1.5rem; padding-bottom: 1.5rem;
+    }
+    .footer-copy { font-family: var(--mono); font-size: 0.896rem; color: var(--muted); }
+    .footer-nick { font-family: var(--mono); font-size: 0.896rem; color: var(--purple); }
+
+    /* ── MOBILE ── */
+    @media (max-width: 640px) {
+      /* padding lateral fixo e generoso */
+      .wrap { padding-left: 20px; padding-right: 20px; }
+
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      #hero { padding-top: 4.5rem; }
+      .hero-sub br { display: none; }
+      .hero-sub { max-width: 100%; }
+      .hero-cta { flex-direction: column; }
+      .hero-cta .btn { text-align: center; }
+
+      /* about — empilha, foto centralizada, texto alinhado à esquerda */
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        justify-items: center;
+      }
+      .about-grid > div:last-child { width: 100%; }
+      .about-img-wrap img { width: 160px; height: 190px; }
+      .about-img-wrap::before { width: 160px; height: 190px; }
+      .about-img-wrap::after { display: none; }
+
+      /* interests coluna única */
+      .interests-grid { grid-template-columns: 1fr; }
+      .interest-card { padding: 1.5rem; }
+
+      /* services — vira cards com padding interno */
+      .service-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 1.25rem;
+        border-bottom: 1px solid var(--border);
+        border-top: none;
+        background: var(--surface);
+      }
+      .service-item:first-child { border-top: 1px solid var(--border); }
+      .service-badge { margin-left: 0; }
+
+      /* contact */
+      .contact-box { padding: 1.5rem; }
+      .contact-links { flex-direction: column; }
+      .contact-links .btn { text-align: center; }
+
+      /* footer */
+      .footer-inner { flex-direction: column; gap: 0.4rem; text-align: center; }
+
+      .section-pad { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="wrap nav-inner">
+      <div class="nav-logo">~/<span>caio-zsh</span></div>
+      <ul class="nav-links">
+        <li><a href="#about">sobre</a></li>
+        <li><a href="#interests">interesses</a></li>
+        <li><a href="#services">serviços</a></li>
+        <li><a href="#contact">contato</a></li>
+      </ul>
+      <button class="hamburger" id="menuBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu-close" id="menuClose">✕</button>
+    <a href="#about"     onclick="closeMenu()">sobre</a>
+    <a href="#interests" onclick="closeMenu()">interesses</a>
+    <a href="#services"  onclick="closeMenu()">serviços</a>
+    <a href="#contact"   onclick="closeMenu()">contato</a>
+  </div>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="wrap hero-content">
+      <p class="hero-tag">// desenvolvedor web &amp; criativo</p>
+      <h1 class="hero-name">Olá,<br>sou <span class="accent">Caio.</span></h1>
+      <p class="hero-sub">
+        Construo sites para <span class="hl">pequenas empresas</span> que querem presença real na web.
+        Misturando código, design e a mentalidade de quem cresceu jogando.
+      </p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary">Falar comigo</a>
+        <a href="#services" class="btn btn-ghost">Ver serviços</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="wrap section-pad">
+      <div class="about-grid">
+        <div class="about-img-wrap">
+          <img src="WhatsApp_Image_2026-05-21_at_19_37_15.jpeg" alt="Caio" />
+        </div>
+        <div>
+          <p class="section-label">// about.me</p>
+          <h2 class="section-title">Dev em construção,<br>criativo de origem.</h2>
+          <p class="about-text">
+            Comecei pelo design, aprendi a olhar com cuidado antes de construir.
+            Agora estou trazendo isso para o desenvolvimento web — focado em ajudar
+            negócios pequenos com uma presença digital que realmente os representa.
+          </p>
+          <p class="about-text">
+            Além do código, sou curioso por jogos, eletrônica e tudo que vive na
+            interseção entre tecnologia e arte. Esse mix aparece no que entrego.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERESTS -->
+  <section id="interests">
+    <div class="wrap section-pad">
+      <p class="section-label">// interests[]</p>
+      <h2 class="section-title">Onde minha cabeça vive.</h2>
+      <div class="interests-grid">
+        <div class="interest-card">
+          <div class="interest-icon">🕹️</div>
+          <h3 class="interest-title">Games</h3>
+          <p class="interest-desc">
+            Cresci com joystick na mão. Games moldaram meu senso de UI, feedback visual e narrativa.
+            Estou trilhando o caminho do desenvolvimento de jogos.
+          </p>
+          <span class="tag tag-purple">game dev</span>
+        </div>
+        <div class="interest-card">
+          <div class="interest-icon">✏️</div>
+          <h3 class="interest-title">Design</h3>
+          <p class="interest-desc">
+            Aprendizado autodidata que me ensinou a ver antes de criar.
+            Visual, tipografia e composição são parte do raciocínio, não um extra.
+          </p>
+          <span class="tag tag-yellow">ui / visual</span>
+        </div>
+        <div class="interest-card">
+          <div class="interest-icon">💻</div>
+          <h3 class="interest-title">Programação</h3>
+          <p class="interest-desc">
+            Web como ponto de entrada. HTML, CSS, JS no dia a dia.
+            Curiosidade sobre o que está por baixo — desde o browser até o circuito.
+          </p>
+          <span class="tag tag-orange">web + código</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="wrap section-pad">
+      <p class="section-label">// services.js</p>
+      <h2 class="section-title">O que posso fazer por você.</h2>
+      <div class="services-list">
+        <div class="service-item">
+          <span class="service-num">01</span>
+          <div class="service-content">
+            <h3 class="service-title">Sites para pequenos negócios</h3>
+            <p class="service-desc">
+              Landing pages e sites institucionais simples, rápidos e que passam credibilidade.
+              Ideal para quem está começando e precisa aparecer online.
+            </p>
+          </div>
+          <span class="service-badge">disponível</span>
+        </div>
+        <div class="service-item">
+          <span class="service-num">02</span>
+          <div class="service-content">
+            <h3 class="service-title">Design de interface</h3>
+            <p class="service-desc">
+              Layout, cores e tipografia pensados para funcionar, não só parecer bonito.
+              Background em design garante atenção ao detalhe visual.
+            </p>
+          </div>
+          <span class="service-badge">disponível</span>
+        </div>
+        <div class="service-item">
+          <span class="service-num">03</span>
+          <div class="service-content">
+            <h3 class="service-title">Manutenção e suporte</h3>
+            <p class="service-desc">
+              Atualizações, correções e acompanhamento contínuo para o site não ficar parado no tempo.
+            </p>
+          </div>
+          <span class="service-badge">disponível</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap section-pad">
+      <p class="section-label">// contact.init()</p>
+      <h2 class="section-title">Vamos conversar.</h2>
+      <div class="contact-box">
+        <p class="about-text" style="margin-bottom:1.5rem;">
+          Tem um projeto pequeno, uma ideia ou só quer trocar uma ideia? Manda mensagem.
+          Respondo rápido.
+        </p>
+        <p class="contact-email">caio-zsh</p>
+        <div class="contact-links">
+          <a href="#" class="btn btn-primary">GitHub</a>
+          <a href="#" class="btn btn-ghost">LinkedIn</a>
+          <a href="#" class="btn btn-ghost">Email</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span class="footer-copy">© 2026 Caio. Feito com código e café.</span>
+      <span class="footer-nick">~/caio-zsh</span>
+    </div>
+  </footer>
+
+  <script>
+    const btn   = document.getElementById('menuBtn');
+    const menu  = document.getElementById('mobileMenu');
+    const close = document.getElementById('menuClose');
+    btn.addEventListener('click', () => menu.classList.add('open'));
+    close.addEventListener('click', () => menu.classList.remove('open'));
+    function closeMenu() { menu.classList.remove('open'); }
+  </script>
+
+</body>
+</html>
