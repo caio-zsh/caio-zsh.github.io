@@ -17,8 +17,6 @@
       --muted: #6b6b80;
       --mono: 'Share Tech Mono', monospace;
       --sans: 'Syne', sans-serif;
-      --max: 860px;
-      --px: clamp(1.25rem, 5vw, 3rem);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -32,7 +30,6 @@
       overflow-x: hidden;
     }
 
-    /* GRID BG */
     body::before {
       content: '';
       position: fixed;
@@ -45,255 +42,159 @@
       z-index: 0;
     }
 
-    /* WRAPPER — todas as seções centralizam aqui */
-    .container {
+    /* ── CONTAINER ÚNICO ── */
+    /* Tudo passa por aqui. Padding lateral fixo em px para garantir respiro. */
+    .wrap {
       width: 100%;
-      max-width: var(--max);
+      max-width: 900px;
       margin-left: auto;
       margin-right: auto;
-      padding-left: var(--px);
-      padding-right: var(--px);
+      padding-left: 24px;
+      padding-right: 24px;
     }
 
-    /* NAV */
+    section { position: relative; z-index: 1; }
+    .section-pad { padding-top: 5rem; padding-bottom: 5rem; }
+
+    /* ── NAV ── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 100;
-      background: rgba(13,13,15,0.88);
+      background: rgba(13,13,15,0.9);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
     }
-
     .nav-inner {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 1.1rem var(--px);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
     }
-
-    .nav-logo {
-      font-family: var(--mono);
-      font-size: 0.95rem;
-      color: var(--purple);
-      letter-spacing: 0.05em;
-    }
+    .nav-logo { font-family: var(--mono); font-size: 1rem; color: var(--purple); letter-spacing: 0.05em; }
     .nav-logo span { color: var(--yellow); }
-
-    .nav-links {
-      display: flex;
-      gap: 1.75rem;
-      list-style: none;
-    }
+    .nav-links { display: flex; gap: 1.75rem; list-style: none; }
     .nav-links a {
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      color: var(--muted);
-      text-decoration: none;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      font-family: var(--mono); font-size: 0.8rem; color: var(--muted);
+      text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase;
       transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--yellow); }
 
-    /* HAMBURGER */
     .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px;
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
     }
-    .hamburger span {
-      display: block;
-      width: 22px;
-      height: 2px;
-      background: var(--muted);
-      transition: background 0.2s;
-    }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--muted); transition: background 0.2s; }
     .hamburger:hover span { background: var(--yellow); }
 
-    /* MOBILE MENU */
     .mobile-menu {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: var(--bg);
-      z-index: 99;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 2.5rem;
+      display: none; position: fixed; inset: 0;
+      background: var(--bg); z-index: 99;
+      flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
     }
     .mobile-menu.open { display: flex; }
     .mobile-menu a {
-      font-family: var(--mono);
-      font-size: 1.3rem;
-      color: var(--text);
-      text-decoration: none;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
+      font-family: var(--mono); font-size: 1.3rem; color: var(--text);
+      text-decoration: none; letter-spacing: 0.15em; text-transform: uppercase;
       transition: color 0.2s;
     }
     .mobile-menu a:hover { color: var(--purple); }
     .mobile-menu-close {
-      position: absolute;
-      top: 1.2rem; right: var(--px);
-      background: none;
-      border: none;
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 1.4rem;
-      cursor: pointer;
+      position: absolute; top: 1.2rem; right: 24px;
+      background: none; border: none; color: var(--muted);
+      font-family: var(--mono); font-size: 1.4rem; cursor: pointer;
     }
 
-    /* SECTION BASE */
-    section {
-      position: relative;
-      z-index: 1;
-    }
-
-    /* HERO */
+    /* ── HERO ── */
     #hero {
       min-height: 100vh;
       display: flex;
       align-items: center;
       padding-top: 5rem;
     }
-    .hero-inner {
-      width: 100%;
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 0 var(--px);
-    }
+    .hero-content { padding-top: 2rem; padding-bottom: 2rem; }
 
     .hero-tag {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--orange);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      margin-bottom: 1.4rem;
+      font-family: var(--mono); font-size: 0.85rem; color: var(--orange);
+      letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.4rem;
     }
     .hero-name {
-      font-size: clamp(3rem, 10vw, 6.5rem);
-      font-weight: 800;
-      line-height: 1;
-      letter-spacing: -0.03em;
+      font-size: clamp(2.8rem, 10vw, 6rem);
+      font-weight: 800; line-height: 1; letter-spacing: -0.03em;
     }
     .hero-name .accent { color: var(--purple); }
-
     .hero-sub {
       font-family: var(--mono);
-      font-size: clamp(0.8rem, 2.2vw, 0.95rem);
-      color: var(--muted);
-      margin-top: 1.5rem;
-      max-width: 480px;
-      line-height: 1.8;
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
+      color: var(--muted); margin-top: 1.5rem;
+      line-height: 1.85; max-width: 480px;
     }
     .hero-sub .hl { color: var(--yellow); }
+    .hero-cta { margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap; }
 
-    .hero-cta {
-      margin-top: 2.5rem;
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    /* BUTTONS */
+    /* ── BUTTONS ── */
     .btn {
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.7rem 1.5rem;
-      text-decoration: none;
-      border: 1px solid;
-      transition: background 0.2s, color 0.2s;
-      cursor: pointer;
-      display: inline-block;
+      font-family: var(--mono); font-size: 0.85rem; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 0.75rem 1.6rem;
+      text-decoration: none; border: 1px solid;
+      transition: background 0.2s, color 0.2s; cursor: pointer; display: inline-block;
     }
     .btn-primary { background: var(--purple); border-color: var(--purple); color: #fff; }
     .btn-primary:hover { background: transparent; color: var(--purple); }
     .btn-ghost { background: transparent; border-color: var(--border); color: var(--muted); }
     .btn-ghost:hover { border-color: var(--orange); color: var(--orange); }
 
-    /* SHARED SECTION PADDING */
-    .section-wrap {
-      padding: 6rem 0;
-    }
-
+    /* ── LABELS & TITLES ── */
     .section-label {
-      font-family: var(--mono);
-      font-size: 0.68rem;
-      color: var(--purple);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      margin-bottom: 0.85rem;
+      font-family: var(--mono); font-size: 0.8rem; color: var(--purple);
+      letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.75rem;
     }
     .section-title {
       font-size: clamp(1.6rem, 4vw, 2rem);
-      font-weight: 800;
-      line-height: 1.15;
-      margin-bottom: 1.25rem;
+      font-weight: 800; line-height: 1.15; margin-bottom: 1.5rem;
     }
 
-    /* ABOUT */
+    /* ── ABOUT ── */
     .about-grid {
       display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 3.5rem;
+      grid-template-columns: 200px 1fr;
+      gap: 3rem;
       align-items: center;
     }
-
-    .about-img-wrap {
-      position: relative;
-      flex-shrink: 0;
-    }
+    .about-img-wrap { position: relative; }
     .about-img-wrap img {
-      width: 220px;
-      height: 260px;
-      object-fit: cover;
-      object-position: center top;
+      width: 200px; height: 240px;
+      object-fit: cover; object-position: center top;
       display: block;
       filter: grayscale(15%) contrast(1.05);
       border: 1px solid var(--border);
     }
     .about-img-wrap::before {
-      content: '';
-      position: absolute;
+      content: ''; position: absolute;
       top: -7px; left: -7px;
-      width: 220px; height: 260px;
-      border: 1px solid var(--purple);
-      z-index: -1;
+      width: 200px; height: 240px;
+      border: 1px solid var(--purple); z-index: -1;
     }
     .about-img-wrap::after {
-      content: '';
-      position: absolute;
+      content: ''; position: absolute;
       bottom: -7px; right: -7px;
-      width: 110px; height: 130px;
-      border: 1px solid var(--orange);
-      z-index: -1;
+      width: 100px; height: 120px;
+      border: 1px solid var(--orange); z-index: -1;
     }
-
     .about-text {
-      font-family: var(--mono);
-      font-size: 0.82rem;
-      color: var(--muted);
-      line-height: 1.85;
+      font-family: var(--mono); font-size: 0.95rem;
+      color: var(--muted); line-height: 1.9;
     }
-    .about-text + .about-text { margin-top: 0.75rem; }
+    .about-text + .about-text { margin-top: 0.85rem; }
 
-    /* INTERESTS */
+    /* ── INTERESTS ── */
     .interests-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       border: 1px solid var(--border);
-      margin-top: 2.5rem;
+      margin-top: 0.5rem;
     }
     .interest-card {
       background: var(--surface);
@@ -305,136 +206,116 @@
     .interest-icon { font-size: 1.4rem; margin-bottom: 1rem; }
     .interest-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; }
     .interest-desc {
-      font-family: var(--mono);
-      font-size: 0.76rem;
-      color: var(--muted);
-      line-height: 1.7;
+      font-family: var(--mono); font-size: 0.88rem;
+      color: var(--muted); line-height: 1.75;
     }
     .tag {
-      display: inline-block;
-      margin-top: 1rem;
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      padding: 0.2rem 0.55rem;
-      border: 1px solid;
+      display: inline-block; margin-top: 1rem;
+      font-family: var(--mono); font-size: 0.72rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      padding: 0.2rem 0.55rem; border: 1px solid;
     }
     .tag-purple { color: var(--purple); border-color: var(--purple); }
     .tag-yellow { color: var(--yellow); border-color: var(--yellow); }
     .tag-orange { color: var(--orange); border-color: var(--orange); }
 
-    /* SERVICES */
-    .services-list { margin-top: 2.5rem; }
+    /* ── SERVICES ── */
+    .services-list { margin-top: 0.5rem; }
     .service-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.75rem 0;
-      border-bottom: 1px solid var(--border);
-      gap: 1.5rem;
+      display: flex; justify-content: space-between;
+      align-items: center; padding: 1.75rem 0;
+      border-bottom: 1px solid var(--border); gap: 1.5rem;
     }
     .service-item:first-child { border-top: 1px solid var(--border); }
-    .service-num {
-      font-family: var(--mono);
-      font-size: 0.68rem;
-      color: var(--purple);
-      min-width: 2rem;
-    }
+    .service-num { font-family: var(--mono); font-size: 0.72rem; color: var(--purple); min-width: 2rem; }
     .service-content { flex: 1; }
     .service-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.35rem; }
-    .service-desc {
-      font-family: var(--mono);
-      font-size: 0.76rem;
-      color: var(--muted);
-      line-height: 1.7;
-    }
+    .service-desc { font-family: var(--mono); font-size: 0.88rem; color: var(--muted); line-height: 1.75; }
     .service-badge {
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      color: var(--orange);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      border: 1px solid var(--orange);
-      padding: 0.2rem 0.55rem;
-      white-space: nowrap;
+      font-family: var(--mono); font-size: 0.72rem; color: var(--orange);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      border: 1px solid var(--orange); padding: 0.25rem 0.6rem; white-space: nowrap;
     }
 
-    /* CONTACT */
+    /* ── CONTACT ── */
     .contact-box {
-      margin-top: 2.5rem;
-      border: 1px solid var(--border);
-      padding: 2.5rem;
-      background: var(--surface);
+      margin-top: 1rem; border: 1px solid var(--border);
+      padding: 2.5rem; background: var(--surface);
     }
     .contact-email {
-      font-size: clamp(1.1rem, 3vw, 1.35rem);
-      font-weight: 800;
-      color: var(--yellow);
-      word-break: break-all;
-      margin-bottom: 1.75rem;
+      font-size: clamp(1.1rem, 3vw, 1.35rem); font-weight: 800;
+      color: var(--yellow); word-break: break-all; margin-bottom: 1.75rem;
     }
     .contact-links { display: flex; gap: 0.85rem; flex-wrap: wrap; }
 
-    /* FOOTER */
-    footer {
-      position: relative;
-      z-index: 1;
-      border-top: 1px solid var(--border);
-    }
+    /* ── FOOTER ── */
+    footer { position: relative; z-index: 1; border-top: 1px solid var(--border); }
     .footer-inner {
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 1.75rem var(--px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 1.5rem; padding-bottom: 1.5rem;
     }
-    .footer-copy { font-family: var(--mono); font-size: 0.68rem; color: var(--muted); }
-    .footer-nick { font-family: var(--mono); font-size: 0.68rem; color: var(--purple); }
+    .footer-copy { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); }
+    .footer-nick { font-family: var(--mono); font-size: 0.8rem; color: var(--purple); }
 
-    /* ─── MOBILE ─── */
+    /* ── MOBILE ── */
     @media (max-width: 640px) {
+      /* padding lateral fixo e generoso */
+      .wrap { padding-left: 20px; padding-right: 20px; }
+
       .nav-links { display: none; }
       .hamburger { display: flex; }
 
-      /* hero */
-      #hero { padding-top: 4rem; }
+      #hero { padding-top: 4.5rem; }
       .hero-sub br { display: none; }
+      .hero-sub { max-width: 100%; }
+      .hero-cta { flex-direction: column; }
+      .hero-cta .btn { text-align: center; }
 
-      /* about — empilha */
+      /* about — empilha, foto centralizada, texto alinhado à esquerda */
       .about-grid {
         grid-template-columns: 1fr;
-        gap: 2.5rem;
+        gap: 2rem;
         justify-items: center;
-        text-align: center;
       }
-      .about-img-wrap img { width: 180px; height: 210px; }
-      .about-img-wrap::before { width: 180px; height: 210px; }
+      .about-grid > div:last-child { width: 100%; }
+      .about-img-wrap img { width: 160px; height: 190px; }
+      .about-img-wrap::before { width: 160px; height: 190px; }
       .about-img-wrap::after { display: none; }
-      .about-text { text-align: left; }
 
-      /* interests — coluna única */
+      /* interests coluna única */
       .interests-grid { grid-template-columns: 1fr; }
+      .interest-card { padding: 1.5rem; }
 
-      /* services */
-      .service-item { flex-wrap: wrap; gap: 0.75rem; }
-      .service-badge { align-self: flex-start; }
+      /* services — vira cards com padding interno */
+      .service-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 1.25rem;
+        border-bottom: 1px solid var(--border);
+        border-top: none;
+        background: var(--surface);
+      }
+      .service-item:first-child { border-top: 1px solid var(--border); }
+      .service-badge { margin-left: 0; }
 
       /* contact */
-      .contact-box { padding: 1.75rem 1.25rem; }
+      .contact-box { padding: 1.5rem; }
       .contact-links { flex-direction: column; }
-      .btn { text-align: center; }
+      .contact-links .btn { text-align: center; }
 
       /* footer */
       .footer-inner { flex-direction: column; gap: 0.4rem; text-align: center; }
+
+      .section-pad { padding-top: 3.5rem; padding-bottom: 3.5rem; }
     }
   </style>
 </head>
 <body>
 
+  <!-- NAV -->
   <nav>
-    <div class="nav-inner">
+    <div class="wrap nav-inner">
       <div class="nav-logo">~/<span>caio-zsh</span></div>
       <ul class="nav-links">
         <li><a href="#about">sobre</a></li>
@@ -459,11 +340,11 @@
 
   <!-- HERO -->
   <section id="hero">
-    <div class="hero-inner">
+    <div class="wrap hero-content">
       <p class="hero-tag">// desenvolvedor web &amp; criativo</p>
       <h1 class="hero-name">Olá,<br>sou <span class="accent">Caio.</span></h1>
       <p class="hero-sub">
-        Construo sites para <span class="hl">pequenas empresas</span> que querem presença real na web.<br>
+        Construo sites para <span class="hl">pequenas empresas</span> que querem presença real na web.
         Misturando código, design e a mentalidade de quem cresceu jogando.
       </p>
       <div class="hero-cta">
@@ -475,22 +356,22 @@
 
   <!-- ABOUT -->
   <section id="about">
-    <div class="container section-wrap">
+    <div class="wrap section-pad">
       <div class="about-grid">
         <div class="about-img-wrap">
-          <img src="foto-perfil.jpeg" alt="Caio" />
+          <img src="WhatsApp_Image_2026-05-21_at_19_37_15.jpeg" alt="Caio" />
         </div>
         <div>
           <p class="section-label">// about.me</p>
           <h2 class="section-title">Dev em construção,<br>criativo de origem.</h2>
           <p class="about-text">
             Comecei pelo design, aprendi a olhar com cuidado antes de construir.
-            Agora estou trazendo isso para o desenvolvimento web — focado em ajudar negócios
-            pequenos com uma presença digital que realmente os representa.
+            Agora estou trazendo isso para o desenvolvimento web — focado em ajudar
+            negócios pequenos com uma presença digital que realmente os representa.
           </p>
           <p class="about-text">
-            Além do código, sou curioso por jogos, eletrônica e tudo que vive na interseção
-            entre tecnologia e arte. Esse mix aparece no que entrego.
+            Além do código, sou curioso por jogos, eletrônica e tudo que vive na
+            interseção entre tecnologia e arte. Esse mix aparece no que entrego.
           </p>
         </div>
       </div>
@@ -499,7 +380,7 @@
 
   <!-- INTERESTS -->
   <section id="interests">
-    <div class="container section-wrap">
+    <div class="wrap section-pad">
       <p class="section-label">// interests[]</p>
       <h2 class="section-title">Onde minha cabeça vive.</h2>
       <div class="interests-grid">
@@ -536,7 +417,7 @@
 
   <!-- SERVICES -->
   <section id="services">
-    <div class="container section-wrap">
+    <div class="wrap section-pad">
       <p class="section-label">// services.js</p>
       <h2 class="section-title">O que posso fazer por você.</h2>
       <div class="services-list">
@@ -578,7 +459,7 @@
 
   <!-- CONTACT -->
   <section id="contact">
-    <div class="container section-wrap">
+    <div class="wrap section-pad">
       <p class="section-label">// contact.init()</p>
       <h2 class="section-title">Vamos conversar.</h2>
       <div class="contact-box">
@@ -597,7 +478,7 @@
   </section>
 
   <footer>
-    <div class="footer-inner">
+    <div class="wrap footer-inner">
       <span class="footer-copy">© 2026 Caio. Feito com código e café.</span>
       <span class="footer-nick">~/caio-zsh</span>
     </div>
